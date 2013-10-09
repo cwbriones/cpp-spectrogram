@@ -9,6 +9,7 @@
 
 #include <map>
 
+#include "ColorGradient.h"
 #include "FreeImage.h"
 
 class Spectrograph {
@@ -51,6 +52,7 @@ private:
     std::vector<short> data_;
 
     Spectrogram_t spectrogram_;
+    ColorGradient gradient_;
 
     int height_ = 480;
     int width_ = height_ * 5;

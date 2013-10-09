@@ -12,7 +12,7 @@ int main(int argc, const char *argv[])
     }
     std::string fname(argv[1]);
 
-    Spectrograph spectrograph(fname, 640, 480);
+    Spectrograph spectrograph(fname, 800, 600);
 
     if (!spectrograph.file_is_valid()){
         return -1;

@@ -15,6 +15,25 @@ Spectrograph::Spectrograph(std::string fname, int width, int height) :
     } else {
         read_in_data();
     }
+
+    // Color for our plot
+    // Black
+    gradient_.add_color({  0,   0,   0,   0});
+    // Purple
+    gradient_.add_color({ 55,   0, 110,   0});
+    // Blue
+    gradient_.add_color({  0,   0, 180,   0});
+    // Cyan
+    gradient_.add_color({  0, 255, 255,   0});
+    // Green
+    gradient_.add_color({  0, 255,   0,   0});
+    // Green Yellow
+    // Yellow
+    gradient_.add_color({255, 255,   0,   0});
+    // Orange
+    gradient_.add_color({230, 160,   0,   0});
+    // Red
+    gradient_.add_color({255,   0,   0,   0});
 }
 
 void Spectrograph::set_window(std::function<double(int, int)> window){
@@ -81,7 +100,7 @@ void Spectrograph::save_image(
         int freq = 0;
         for (int y = 1; y <= height_; y++){
 
-            RGBQUAD color = get_color(spectrogram_[x][freq], 10.0);
+            RGBQUAD color = get_color(spectrogram_[x][freq], 15);
             FreeImage_SetPixelColor(bitmap, x, y - 1, &color);
             
             if (log_mode){
@@ -103,15 +122,12 @@ void Spectrograph::save_image(
 }
 
 RGBQUAD Spectrograph::get_color(std::complex<double>& c, float threshold){
-    double val = 0.5 * std::log10(Utility::mag(c) + 1);
+    double value = 0.5 * std::log10(Utility::mag(c) + 1);
+    gradient_.set_max(threshold);
 
-    if (val > threshold){
-        val = threshold;
-    }
-    float ratio = val/threshold;
-    uint8_t num = static_cast<uint8_t>(ratio * 255);
+    auto rgba_color = gradient_.get_color(value);
 
-    return {num, num, num, 255};
+    return rgba_color.toFreeImageQuad();
 }
 
 void Spectrograph::compute(const int CHUNK_SIZE, const float OVERLAP){
