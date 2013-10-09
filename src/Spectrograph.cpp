@@ -65,7 +65,13 @@ void Spectrograph::save_image(
     FIBITMAP *bitmap = FreeImage_Allocate(spectrogram_.size(), height_, 32); // RGBA
 
     const int data_size = spectrogram_.front().size();
-    const int data_size_used = data_size * 0.5;
+    // Only the data below 1/2 of the sampling rate (nyquist frequency)
+    // is useful
+    float multiplier = 0.5;
+    for (int i = 1; i < file_handle_.channels(); i++){
+        multiplier *= 0.5;
+    }
+    const int data_size_used = data_size * multiplier;
 
     const double log_coef = 
         (1.0/log(static_cast<double>(height_ + 1))) * static_cast<double>(data_size_used);
@@ -81,7 +87,7 @@ void Spectrograph::save_image(
             if (log_mode){
                 freq = data_size_used - 1 - static_cast<int>(log_coef * log(height_ + 1 - y));
             } else {
-                double ratio = static_cast<double>(y)/height_;
+                float ratio = static_cast<float>(y)/height_;
                 freq = static_cast<int>(ratio * data_size_used);
             }
         }
@@ -140,6 +146,9 @@ int Spectrograph::get_number_of_chunks(const int CHUNK_SIZE, const int STEP){
     int chunks = 0;
     for( ; i + CHUNK_SIZE <= data_.size(); i += STEP){
         ++chunks;
+    }
+    if (i == data_.size()){
+        chunks -= 1;
     }
     return chunks;
 }
