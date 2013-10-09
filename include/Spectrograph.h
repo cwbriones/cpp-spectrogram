@@ -38,6 +38,7 @@ public:
     int pad_to_power2(std::vector<std::complex<double>>& signal, int min_size);
 private:
     void _transform(std::vector<std::complex<double>>& signal, int min_size = -1);
+    int get_number_of_chunks(const int CHUNK_SIZE, const int STEP);
     void chunkify(const int CHUNK_SIZE, const int STEP);
 
     RGBQUAD get_color(std::complex<double>& c, float threshold);

@@ -135,11 +135,26 @@ void Spectrograph::compute(const int CHUNK_SIZE, const float OVERLAP){
     chunkify(CHUNK_SIZE, STEP);
 }
 
+int Spectrograph::get_number_of_chunks(const int CHUNK_SIZE, const int STEP){
+    int i = 0;
+    int chunks = 0;
+    for( ; i + CHUNK_SIZE <= data_.size(); i += STEP){
+        ++chunks;
+    }
+    return chunks;
+}
+
 void Spectrograph::chunkify(const int CHUNK_SIZE, const int STEP){
     spectrogram_.clear();
-    spectrogram_.reserve((data_.size() - CHUNK_SIZE)/STEP + 1);
+    // spectrogram_.reserve((data_.size() - CHUNK_SIZE)/STEP + 1);
+    spectrogram_.reserve(width_);
 
     std::cout << "Computing chunks." << std::endl;
+    int num_chunks = get_number_of_chunks(CHUNK_SIZE, STEP);
+    std::cout << "Number of Chunks: " << num_chunks << std::endl;
+
+    float chunk_width_ratio = static_cast<float>(num_chunks)/width_;
+
     for (int i = 0; i + CHUNK_SIZE <= data_.size(); i += STEP){
         spectrogram_.push_back(
                 std::vector<complex_d>(
