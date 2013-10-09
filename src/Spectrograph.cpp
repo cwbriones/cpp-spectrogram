@@ -65,7 +65,7 @@ void Spectrograph::save_image(
     FIBITMAP *bitmap = FreeImage_Allocate(spectrogram_.size(), height_, 32); // RGBA
 
     const int data_size = spectrogram_.front().size();
-    const int data_size_used = data_size * 0.25;
+    const int data_size_used = data_size * 0.5;
 
     const double log_coef = 
         (1.0/log(static_cast<double>(height_ + 1))) * static_cast<double>(data_size_used);
@@ -82,7 +82,7 @@ void Spectrograph::save_image(
                 freq = data_size_used - 1 - static_cast<int>(log_coef * log(height_ + 1 - y));
             } else {
                 double ratio = static_cast<double>(y)/height_;
-                freq = static_cast<int>(ratio * data_size * 0.5);
+                freq = static_cast<int>(ratio * data_size_used);
             }
         }
     }
@@ -155,15 +155,21 @@ void Spectrograph::chunkify(const int CHUNK_SIZE, const int STEP){
 
     float chunk_width_ratio = static_cast<float>(num_chunks)/width_;
 
-    for (int i = 0; i + CHUNK_SIZE <= data_.size(); i += STEP){
+    int j = 0;
+    float float_j = 0.0;
+
+    while (j < num_chunks){
+        float_j += chunk_width_ratio;
+        j = static_cast<int>(float_j);
+
         spectrogram_.push_back(
                 std::vector<complex_d>(
-                data_.begin() + i,
-                data_.begin() + i + CHUNK_SIZE)
-                );
+                    data_.begin() + j * STEP,
+                    data_.begin() + j * STEP + CHUNK_SIZE
+                    )
+        );
         transform(spectrogram_.back());
     }
-    std::cout << "Done." << std::endl;
 }
 
 // TODO: Cache calculations of omega
