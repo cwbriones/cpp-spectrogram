@@ -60,7 +60,7 @@ namespace Utility {
     }
 
     double abs(complex_d& c){
-        return c.real() * c.real() + c.imag() * c.imag();
+        return sqrt(c.real() * c.real() + c.imag() * c.imag());
     }
 
     double mag(complex_d& c){
