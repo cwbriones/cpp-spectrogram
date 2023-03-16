@@ -64,7 +64,7 @@ namespace Utility {
     }
 
     double abs(complex_d& c){
-        return sqrt(c.real() * c.real() + c.imag() + c.imag());
+        return sqrt(c.real() * c.real() + c.imag() * c.imag());
     }
 
     complex_d omega(float p, float q){
