@@ -59,12 +59,12 @@ namespace Utility {
         }
     }
 
-    double mag(complex_d& c){
+    double abs(complex_d& c){
         return c.real() * c.real() + c.imag() * c.imag();
     }
 
-    double abs(complex_d& c){
-        return sqrt(c.real() * c.real() + c.imag() + c.imag());
+    double mag(complex_d& c){
+        return sqrt(c.real() * c.real() + c.imag() * c.imag());
     }
 
     complex_d omega(float p, float q){
