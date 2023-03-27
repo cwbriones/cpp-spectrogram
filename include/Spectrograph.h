@@ -66,7 +66,7 @@ private:
     std::string fname_;
 
     SndfileHandle file_handle_;
-    std::vector<short> data_;
+    std::vector<float> data_;
 
     Spectrogram_t spectrogram_;
     ColorGradient gradient_;
