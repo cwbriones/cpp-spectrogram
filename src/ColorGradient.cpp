@@ -20,11 +20,17 @@
 
 RGBA_Color ColorGradient::get_color(float value){
     assert(colors_.size() > 1);
-
+    
     if (value >= max_){
         return colors_.back();
     }
-    float ratio = value/max_;
+    
+    //Normilize to 0..1
+    value = ((value - min_) / (max_ - min_)) * 1;
+    
+    //float ratio = value/max_;
+    float ratio = value;
+    
     float width = 1.0/static_cast<float>(colors_.size() - 1);
     int i = 0;
 
