@@ -59,7 +59,7 @@ private:
     int get_number_of_chunks(const int CHUNK_SIZE, const int STEP);
     void chunkify(const int CHUNK_SIZE, const int STEP);
 
-    RGBQUAD get_color(std::complex<double>& c, float threshold);
+    RGBQUAD get_color(double c, float max_threshold, float min_threshold);
     std::complex<double> omega(float p, float q);
     void read_in_data();
 
