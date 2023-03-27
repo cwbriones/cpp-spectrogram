@@ -141,17 +141,18 @@ void Spectrograph::save_image(
                 //Convert magnitude to dB if log_mode = true
                 log_spec = 20*log10(std::max(mag_val, epsilon));
                 RGBQUAD color = get_color(std::max(log_spec, min_threshold), max_threshold, min_threshold );
+            } else {
+                RGBQUAD color = get_color(mag_val, mag_max, mag_min );
             }
 
-            RGBQUAD color = get_color(spectrogram_[x][freq], 15);
             FreeImage_SetPixelColor(bitmap, x, y - 1, &color);
             
-            if (log_mode){
-                freq = data_size_used - 1 - static_cast<int>(log_coef * log(height_ + 1 - y));
-            } else {
+            //if (log_mode){
+            //    freq = data_size_used - 1 - static_cast<int>(log_coef * log(height_ + 1 - y));
+            //} else {
                 float ratio = static_cast<float>(y)/height_;
                 freq = static_cast<int>(ratio * data_size_used);
-            }
+            //}
         }
     }
 
