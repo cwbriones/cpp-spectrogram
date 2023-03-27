@@ -99,6 +99,8 @@ void Spectrograph::save_image(
         FreeImage_Initialise();
     #endif
     FIBITMAP *bitmap = FreeImage_Allocate(spectrogram_.size(), height_, 32); // RGBA
+    float top_db= 80;
+    
 
     const int data_size = spectrogram_.front().size();
     // Only the data below 1/2 of the sampling rate (nyquist frequency)
