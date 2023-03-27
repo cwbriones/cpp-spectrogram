@@ -127,9 +127,21 @@ void Spectrograph::save_image(
 
 
     std::cout << "Drawing." << std::endl;
+    double log_spec;
+    const double epsilon = 1e-10;
+    
+    doulble max_threshold = 20*log10(mag_max);
+    doulble min_threshold =  20*log10(mag_max) - top_db;
+        
     for (int x = 0; x < spectrogram_.size(); x++){
         int freq = 0;
         for (int y = 1; y <= height_; y++){
+            double mag_val = abs(spectrogram_[x][freq]);
+            if (log_mode){
+                //Convert magnitude to dB if log_mode = true
+                log_spec = 20*log10(std::max(mag_val, epsilon));
+                RGBQUAD color = get_color(std::max(log_spec, min_threshold), max_threshold, min_threshold );
+            }
 
             RGBQUAD color = get_color(spectrogram_[x][freq], 15);
             FreeImage_SetPixelColor(bitmap, x, y - 1, &color);
@@ -152,12 +164,13 @@ void Spectrograph::save_image(
     #endif
 }
 
-RGBQUAD Spectrograph::get_color(std::complex<double>& c, float threshold){
-    double value = 0.5 * std::log10(Utility::mag(c) + 1);
-    gradient_.set_max(threshold);
-
+RGBQUAD Spectrograph::get_color(double c, float max_threshold, float min_threshold){
+    
+    double value = c;
+    gradient_.set_max(max_threshold);
+    gradient_.set_min(min_threshold);
     auto rgba_color = gradient_.get_color(value);
-
+    
     return rgba_color.toFreeImageQuad();
 }
 
