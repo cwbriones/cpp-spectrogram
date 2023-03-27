@@ -113,6 +113,18 @@ void Spectrograph::save_image(
 
     const double log_coef = 
         (1.0/log(static_cast<double>(height_ + 1))) * static_cast<double>(data_size_used);
+        
+    //Calc min/max values of magnitude
+    double mag_min = std::numeric_limits<double>::max();
+    double mag_max = std::numeric_limits<double>::lowest();
+    for (const auto& row : spectrogram_) {
+        for (const auto& val : row) {
+            double magn = std::abs(val);
+            mag_min = std::min(mag_min, magn);
+            mag_max = std::max(mag_max, magn);
+        }
+    }
+
 
     std::cout << "Drawing." << std::endl;
     for (int x = 0; x < spectrogram_.size(); x++){
