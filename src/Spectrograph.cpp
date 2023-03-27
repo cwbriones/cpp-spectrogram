@@ -69,7 +69,7 @@ void Spectrograph::read_in_data(){
 
     const int data_size = file_handle_.channels() * file_handle_.frames();
 
-    data_ = std::vector<short>(data_size, 0);
+    data_ = std::vector<float>(data_size, 0);
     file_handle_.read(&data_[0], data_.size());
     max_frequency_ = file_handle_.samplerate() * 0.5;
 }
