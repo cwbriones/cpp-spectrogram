@@ -1,5 +1,4 @@
-C++ Spectrogram
-===============
+# C++ Spectrogram
 
 A spectrogram written in C++.
 
@@ -19,7 +18,13 @@ executable.
 Currently there is no way to specify command line arguments, so you will
 have to code them in if you would like to change settings.
 
-Copying
--------
-This source is released under the GPLv3 license.
-Read the COPYING file for legal information.
+## Copying
+This source is released under the MIT license.
+
+NOTE: Prior releases of this project were released under GPLv3.
+
+## Contributing
+This project was only ever intended as a learning exercise and is not currently
+accepting any contributions.
+
+You are welcome to fork and use the code under the terms of the license.
